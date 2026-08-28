@@ -1,0 +1,22 @@
+# Environment and Secrets
+.env
+
+# Python Virtual Environments & Caches
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Databases & Local Logs
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# IDE & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

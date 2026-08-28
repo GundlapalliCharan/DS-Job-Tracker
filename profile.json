@@ -1,0 +1,33 @@
+{
+    "education": {
+        "degree": "B.Tech",
+        "branch": "CSE",
+        "passing_year": 2026,
+        "cgpa": 8.5,
+        "aggregate": 0.0
+    },
+
+    "skills": [
+        "Python",
+        "SQL",
+        "Machine Learning",
+        "Data Science"
+    ],
+
+    "preferred_roles": [
+        "Data Scientist",
+        "Data Analyst",
+        "Machine Learning Engineer",
+        "AI Engineer",
+        "AI Developer",
+        "Python Developer"
+    ],
+
+    "preferred_locations": [
+        "Hyderabad",
+        "Bengaluru",
+        "Remote"
+    ],
+
+    "experience": "Fresher"
+}
