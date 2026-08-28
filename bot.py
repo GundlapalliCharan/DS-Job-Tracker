@@ -1,7 +1,9 @@
+import os
 import asyncio
 from datetime import datetime
 import discord
 from discord.ext import tasks
+from aiohttp import web
 
 from config import (
     DISCORD_TOKEN,
@@ -39,6 +41,25 @@ discord_client = discord.Client(intents=intents)
 # ==========================================
 message_queue = asyncio.Queue()
 message_worker_task = None
+
+# ==========================================
+# HEALTH CHECK HTTP SERVER (FOR RENDER FREE TIER)
+# ==========================================
+async def handle_health_check(request):
+    """Responds to Render health checks to keep Web Service active on free tier."""
+    return web.Response(text="DS-Job-Tracker is alive and running!")
+
+async def start_health_server():
+    """Starts a lightweight HTTP server on $PORT for Render compatibility."""
+    port = int(os.getenv("PORT", 8080))
+    app = web.Application()
+    app.router.add_get("/", handle_health_check)
+    app.router.add_get("/health", handle_health_check)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    logger.info(f"HEALTH_SERVER: HTTP health check listening on port {port}")
 
 # ==========================================
 # HELPER FUNCTIONS
@@ -274,6 +295,10 @@ async def main():
     validate_environment()
     init_database()
     logger.info("BOT_START: Launching DS Job Tracker production service...")
+
+    # Start lightweight HTTP server for Render Free Web Service compatibility
+    await start_health_server()
+
     try:
         async with discord_client:
             await discord_client.start(DISCORD_TOKEN)
